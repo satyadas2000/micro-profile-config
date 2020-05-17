@@ -10,8 +10,12 @@ public class ProfileController {
 	@Value("${app.message}")
 	private String welcomeMessage;
 	
-	@GetMapping("/welcome")
+	@GetMapping("/v1/welcome")
 	public String getDataBaseConnectionDetails() {
 		return welcomeMessage;
+	}
+	@GetMapping("/v2/welcome")
+	public String getDataBaseConnectionDetailsv2() {
+		return welcomeMessage+"satya";
 	}
 }
