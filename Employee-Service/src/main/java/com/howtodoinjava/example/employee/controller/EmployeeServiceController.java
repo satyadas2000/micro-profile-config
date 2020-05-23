@@ -3,6 +3,8 @@ package com.howtodoinjava.example.employee.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +39,27 @@ public class EmployeeServiceController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	ProfileServiceClient profileService;
+	
     @RequestMapping(value = "/findEmployeeDetails/{employeeId}", method = RequestMethod.GET)
     public Employee getEmployeeDetails(@PathVariable int employeeId) {
         System.out.println("Getting Employee details for " + employeeId);
         String addrmsg = restTemplate.getForObject("http://localhost:8080/v2/welcome", String.class);
+        Employee employee = employeeData.get(employeeId);
+        
+        if (employee == null) {
+            
+        	employee = new Employee(0, "N/A");
+            
+        }
+        employee.setName(addrmsg);
+        return employee;
+    }
+    @RequestMapping(value = "/findEmployeeDetails/v1/{employeeId}", method = RequestMethod.GET)
+    public Employee getEmployeeDetails1(@PathVariable int employeeId) {
+        System.out.println("Getting Employee details for " + employeeId);
+        String addrmsg = profileService.getDataBaseConnectionDetails();
         Employee employee = employeeData.get(employeeId);
         
         if (employee == null) {
